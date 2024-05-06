@@ -62,8 +62,9 @@ export class AuthService {
     }
 
 
-    async signout() {
-        return ''
+    async signout(req: Request, res: Response) {
+        res.clearCookie('token')
+        return res.send({ message: 'Logged out successfully!' })
     }
 
 
