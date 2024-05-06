@@ -4,10 +4,13 @@ import { PrismaService } from 'prisma/prisma.service';
 
 import * as bcrypt from 'bcrypt';
 
+import { JwtService } from '@nestjs/jwt';
+
+import { jwtSecret } from 'src/utils/constants';
 
 @Injectable()
 export class AuthService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService, private jwt: JwtService) {}
 
     async signup(dto:AuthDto) {
         const { email, password } = dto;
@@ -44,10 +47,11 @@ export class AuthService {
 
         if (!isMatch) {
             throw new BadRequestException('Wrong credentials!')
-
         }
 
-        return ''
+        const token = await this.signToken({id: foundUser.id, email: foundUser.email})
+
+        return { token }
     }
 
 
@@ -65,5 +69,15 @@ export class AuthService {
 
     async comparePasswords(args: {password:string, hash:string}){
         return await bcrypt.compare(args.password, args.hash);
+    }
+
+
+        // Sign jwt & return to the user
+
+
+    async signToken(args: {id: string, email:string}) {
+        const payload = args
+
+        return this.jwt.signAsync(payload, {secret: jwtSecret})
     }
 }
