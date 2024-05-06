@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+
+
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { AuthDto } from './dto/auth.dto';
 import { PrismaService } from 'prisma/prisma.service';

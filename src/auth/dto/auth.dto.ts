@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 
